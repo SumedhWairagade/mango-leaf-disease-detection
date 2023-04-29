@@ -20,6 +20,16 @@
             <p class="tex">We understand our Data and convert it into a Dataframe using the pandas library. Also we have defined a Function to evaluate the <i>validation score</i> for our data split, Also we have defined another function to determine the <i>likelihood</i> of the predicted answer.</p>
             <p class="tex">We used a <i>Multinomial Naive Bayes Classifier</i> model given in the sklearn library. We fine tuned our hyperparameters by using <i>KFold Cross Validation</i> from sklearn, and found out the best learning rate and min_df variable which is used to determine the freqency of words that should be removed.</p>
             <p class="tex">After initializing the model and preprocessing the data, we fit the data in our model. And train it with validation set as well. The Multinomial Naive Bayes Classifier model works by calculating the conditional probability of each feature given each class, and then using Bayes' theorem to calculate the probability of each class given the observed features in a document. The class with the highest probability is then assigned as the predicted class for the document.</p>
+            <!--
+                Use this to show the code in your web page
+                <pre>
+                <code>
+                    p { color: red; }
+                    body { background-color: #eee; }
+                </code>
+                </pre>
+            -->
+            
             <h3><b>Next Step:</b></h3>
             <p class="tex">We have check the accuracy of our classifier model after training the model. We compare the <i>accuracy</i> of <i>train data</i> and <i>test data</i> on our model.</p>
             <p class="tex">Also we displayed some of the mis-predicted reviews by our model, where the resultant label was expected to be fresh and our model predicted it as rotten and vice-a-verse.</p>
