@@ -11,35 +11,82 @@
             <a href="https://sumedhwairagade.github.io/portfolio/" class="linke">CV</a>
         </header>
         <main>
-            <h2><b>Rotten Tomatoes Reviews</b></h2>
-            <p class="tex">I have build a model to predict the freshness of the reviews from the given <i>rotten-tomatoes-reviews dataset</i> on Kaggle, <a href="https://www.kaggle.com/datasets/ulrikthygepedersen/rotten-tomatoes-reviews" target="_blank">rotten-tomatoes-reviews dataset</a>. Rotten Tomatoes Reviews Dataest has been a popular area of research in <i>Sentiment Analysis</i> Area. The ability to predict and classify reviews from Rotten Tomatoes which can have a wide range of applications, including Sentiment Analysis, Social Media Monitoring, and Product Analysis. In this post, we built a Classification model using Naive Bayes Classifier given in sklearn library, a popular Classification model.</p>
+            <h2><b>Mango Leaf Disease Dataset</b></h2>
+            <p class="tex">I have built 2 model to predict the diseases found on Mango leaves using the given <i>Mango Leaf Disease Dataset</i> on Kaggle, <a href="https://www.kaggle.com/datasets/aryashah2k/mango-leaf-disease-dataset" target="_blank">mango-leaf-disease dataset</a>. Mango Leaf Disease Dataset can be a very helpful area to be explored for the summer season when the mangoes are in market the most. The ability to predict and classify the diseases on the mango leafs which can have a wide range diseases, such as "<i>Anthracnose</i>", "<i>Bacterial Canker</i>", "<i>Cutting Weevil</i>", "<i>Die Back</i>", "<i>Gall Midge</i>", "<i>Healthy</i>", "<i>Powdery Mildew</i>", "<i>Sooty Mould</i>". In this post, we built a Classification model using VGG16 Neural Network Model and Sequential Model from keras library.</p>
             <h3><b>First Step:</b></h3>
-            <p class="tex">We generate an api to access the kaggle Dataset in google colab, it will give us a <i>kaggle.json</i> file which we have to upload in our notebook files menu. We download the required dataset from kaggle to train our model. Our Dataset has reviews with two different labels such as Fresh and Rotten. We just unzip the downloaded Dataset in google colab, then access it from files, which you can see it <a href="https://www.kaggle.com/general/74235" target="_blank">here</a> and there is one another way in which we can upload the file to our google drive and then access it from there by giving the notebook file access to your google dataset.</p>
+            <p class="tex">We generate an api to access the kaggle Dataset in google colab, it will give us a <i>kaggle.json</i> file which we have to upload in our notebook files menu. We download the required dataset from kaggle to train our model. Our Dataset has images of mango leaves with different diseases along with the healthy ones with multiple labels. We just unzip the downloaded Dataset in a dataset folder in google colab, then access it from files, which you can see it <a href="https://www.kaggle.com/general/156610" target="_blank">here</a> and there is one another way in which we can upload the file to our google drive and then access it from there by giving the notebook file access to your google dataset.</p>
+            <pre><code>!kaggle datasets download -d aryashah2k/mango-leaf-disease-dataset<br />
+                !mkdir -p /content/Datacard<br />
+                !unzip mango-leaf-disease-dataset.zip -d /content/Datacard<br />
+            </code></pre>
             <h3><b>Second Step:</b></h3>
-            <p class="tex">Now, we use the Python libraries to load and preprocess the data. We will use sklearn, a scientific tool-kit library, to build a Review Analysis model from the dataset. We will also split the dataset in train and test set. We used <i>CountVectorizer</i> function to find out frequencies of the words in our dataset.</p>
-            <p class="tex">We understand our Data and convert it into a Dataframe using the pandas library. Also we have defined a Function to evaluate the <i>validation score</i> for our data split, Also we have defined another function to determine the <i>likelihood</i> of the predicted answer.</p>
-            <p class="tex">We used a <i>Multinomial Naive Bayes Classifier</i> model given in the sklearn library. We fine tuned our hyperparameters by using <i>KFold Cross Validation</i> from sklearn, and found out the best learning rate and min_df variable which is used to determine the freqency of words that should be removed.</p>
-            <p class="tex">After initializing the model and preprocessing the data, we fit the data in our model. And train it with validation set as well. The Multinomial Naive Bayes Classifier model works by calculating the conditional probability of each feature given each class, and then using Bayes' theorem to calculate the probability of each class given the observed features in a document. The class with the highest probability is then assigned as the predicted class for the document.</p>
-            <!--
-                Use this to show the code in your web page
-                <pre><code class="language-css">.some-box {
-                width: 20px;
-                height: 20px;
-                background: black;
-                margin-bottom: 1.5rem;
-                }
-                </code></pre>
-            -->
-            
+            <p class="tex">Now, we use the Python libraries to load and preprocess the data. We will use Keras Library, a library to build a model for classifying images of mango leaves. We will also split the dataset in training validation and test sets. We used a function to make a directory of the training testing and validation datasets.</p>
+            <pre><code>import shutil, os<br />
+                import numpy as np<br />
+                import pandas as pd<br />
+                from sklearn.utils import shuffle<br />
+                import matplotlib.pyplot as plt<br />
+                import random<br />
+                import glob<br />
+                import tensorflow as tf<br />
+                import keras<br />
+                from keras.applications.vgg16 import VGG16<br />
+                from torch.utils.data.sampler import SubsetRandomSampler<br />
+                from torch.utils.data import Dataset, DataLoader<br />
+                import PIL<br />
+                import PIL.Image<br />
+                from keras.preprocessing.image import ImageDataGenerator<br />
+                from sklearn.metrics import confusion_matrix<br />
+                from keras.callbacks import Callback<br />
+                from keras.callbacks import ModelCheckpoint<br />
+            </code></pre>
+            <p class="tex">We used a pretrained <i>VGG16</i> model given in the keras library. Also we made a data spliter library, which helps divide the image dataset.into training, testing and validation set.</p>
+            <pre><code>def data_spliter(all_data_dir=data_dir,val_data_dir=val_dir,train_data_dir=train_dir,test_data_dir=test_dir,ttr=train_test_ratio):<br />
+                for subdir,dirs,files in os.walk(all_data_dir):
+                    <u>#split all the data code</u>
+            </code></pre>
+            <p class="tex">We build a model with the initial layers having VGG16 maodel which has 16 layers and add some more layers in between and then stack the output layer at the end</p>
+            <pre><code>base_model = VGG16(input_shape = (224, 224, 3), include_top = False, weights = 'imagenet')<br />
+                for layer in base_model.layers:<br />
+                    layer.trainable = False<br />
+                base_model_ouput = base_model.output<br />
+                x = tf.keras.layers.GlobalAveragePooling2D()(base_model_ouput)<br />
+                x = tf.keras.layers.Dense(128, activation='relu')(x)<br />
+                x = tf.keras.layers.Dense(num_classes, activation='softmax', name='fcnew')(x)<br />
+                model = tf.keras.Model(inputs=base_model.input, outputs=x)<br />
+            </code></pre>
+            <p class="tex">Now we compile the whole model.</p>
+            <pre><code>model.compile(optimizer = opt , loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True) , metrics = ['accuracy'])</code></pre>
+            <h3><b>Third Step:</b></h3>
+            <p class="tex">We fit our data in the model using model.fit() module in keras Library. We can gather <i>accuracy</i>, <i>validation_accuracy</i>, <i>loss</i> and <i>validation_loss</i>.</p>
+            <pre><code>model.fit(<u>"training_dataset_variable"</u>>, epochs = 10, validation_data = val_it, callbacks = callbacks)</code></pre>
+            <p class="tex">We can store this fiting operation in a variable and then we can call the  predefined accuracy and loss functions to find the values. Also, we can see where our model is overfitting by comparing training loss and validation loss. So we can make a different model variable where we give less epochs according to the overfitting we saw earlier.</p>
+            <p class="tex">I also Implemented a <i>Callback module</i> from Keras Library to prevent our model from overfitting.</p>
+            <pre><code>model.fit(train_it, epochs = 10, validation_data = val_it, callbacks = callbacks)</code></pre>
             <h3><b>Next Step:</b></h3>
-            <p class="tex">We have check the accuracy of our classifier model after training the model. We compare the <i>accuracy</i> of <i>train data</i> and <i>test data</i> on our model.</p>
-            <p class="tex">Also we displayed some of the mis-predicted reviews by our model, where the resultant label was expected to be fresh and our model predicted it as rotten and vice-a-verse.</p>
-            <p class="tex">We predicted the label for one of our own review sample using our trained model. You can use many other models to do the text classification work such as, SVM, Decision Trees, Random Forest(it is just the extension of the Decision Trees), Gradient Boosting Algorithms, and Neural Networks.</p>
+            <p class="tex">We also built another Sequential model for image classification using keras layers and then we added these layers in the model as given in the code below.</p>
+            <pre><code>model = Sequential()<br />
+                model.add(Conv2D(32,3,padding="same", activation="relu", input_shape=(224,224,3)))<br />
+                model.add(MaxPool2D())<br />
+                <br />
+                model.add(Conv2D(32, 3, padding="same", activation="relu"))<br />
+                model.add(MaxPool2D())<br />
+                <br />
+                model.add(Conv2D(64, 3, padding="same", activation="relu"))<br />
+                model.add(MaxPool2D())<br />
+                model.add(Dropout(0.4))<br />
+                <br />
+                model.add(Flatten())<br />
+                model.add(Dense(128,activation="relu"))<br />
+                model.add(Dense(2, activation="softmax"))<br />
+                <br />
+                model.summary()</code></pre>
             <h3><b>Motivation:</b></h3>
-            <p class="tex">This assignment was to understand and implement the Sentiment Analysis Model using sklearn library. The best part of building this model was to understand the data we are working on and to understand how to use the technology to understand the sentiment behind it. Sometimes the reviews could get tricky but if we build a good enough model we could successfully predict the true intentions.</p>
+            <p class="tex">This project assignment was to understand and implement the image classification model using Keras Library. The best part of building this model was to distribute the data in training, testing and validation sets. Also making the model using different keras layers was a fun objective to work on.</p>
             <h3><b>Conclusion and Future Scope:</b></h3>
-            <p class="tex">I experienced how to preprocess the text data and build a text classification model in this assignment and got to know how I can tune my hyperparameters to make my model to perform better. I have made a <a href="https://colab.research.google.com/drive/1sGBOtstuA1mOtMOWDzrty0k5Re0Rcb23?usp=sharing" target="_blank">Google Colab notebook</a> of it, which you can check out it is pretty easy to understand.</p>
+            <p class="tex">I experienced how to preprocess the image data and build a classification model based on our data. I have made a <a href="https://colab.research.google.com/drive/1KFMrmgwYiTQiBPqniE_JYaex9PBoEQX6?usp=sharing" target="_blank">Google Colab notebook</a> of it, which you can check out it is pretty easy to understand. Also, the future work on this project can be to build the disease classification model for all plants.</p>
             <p class="tex">Try competitions on Kaggle it is fun and good for practicing your skills and keeping uptodate with current technology.</p>
+            <div><iframe src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe></div>
         </main>
         <footer>
             <a href="mailto: sumedhwairagade2gmail.com"><img src="email.png"></a>
