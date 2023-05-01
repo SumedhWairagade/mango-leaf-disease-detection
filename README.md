@@ -4,5 +4,5 @@ Here, i implemented image classification on the given Mango Leaf Disease Detecti
 
 Link:   
 Google Colab Notebook - https://colab.research.google.com/drive/1KFMrmgwYiTQiBPqniE_JYaex9PBoEQX6?usp=sharing   
-Blog page url -   
+Blog page url - https://sumedhwairagade.github.io/mango-leaf-disease-detection/   
 Steps to Download kaggle datasets url - https://www.kaggle.com/general/156610   
