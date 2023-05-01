@@ -66,21 +66,21 @@
             <h3><b>Next Step:</b></h3>
             <p class="tex">We also built another Sequential model for image classification using keras layers and then we added these layers in the model as given in the code below.</p>
             <pre><code>model = Sequential()<br />
-                model.add(Conv2D(32,3,padding="same", activation="relu", input_shape=(224,224,3)))<br />
-                model.add(MaxPool2D())<br />
+model.add(Conv2D(32,3,padding="same", activation="relu", input_shape=(224,224,3)))<br />
+model.add(MaxPool2D())<br />
                 <br />
-                model.add(Conv2D(32, 3, padding="same", activation="relu"))<br />
-                model.add(MaxPool2D())<br />
+model.add(Conv2D(32, 3, padding="same", activation="relu"))<br />
+model.add(MaxPool2D())<br />
                 <br />
-                model.add(Conv2D(64, 3, padding="same", activation="relu"))<br />
-                model.add(MaxPool2D())<br />
-                model.add(Dropout(0.4))<br />
+model.add(Conv2D(64, 3, padding="same", activation="relu"))<br />
+model.add(MaxPool2D())<br />
+model.add(Dropout(0.4))<br />
                 <br />
-                model.add(Flatten())<br />
-                model.add(Dense(128,activation="relu"))<br />
-                model.add(Dense(2, activation="softmax"))<br />
+model.add(Flatten())<br />
+model.add(Dense(128,activation="relu"))<br />
+model.add(Dense(2, activation="softmax"))<br />
                 <br />
-                model.summary()</code></pre>
+model.summary()</code></pre>
             <h3><b>Motivation:</b></h3>
             <p class="tex">This project assignment was to understand and implement the image classification model using Keras Library. The best part of building this model was to distribute the data in training, testing and validation sets. Also making the model using different keras layers was a fun objective to work on.</p>
             <h3><b>Conclusion and Future Scope:</b></h3>
